@@ -8,3 +8,5 @@ Order: 6, Word: about
 Order: 7, Word: don’t
 Order: 8, Word: need
 Order: 9, Word: PowerPoint.
+
+# People who know what they're talking about don't need powerpoint.
