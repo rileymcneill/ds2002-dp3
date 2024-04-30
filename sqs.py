@@ -21,26 +21,28 @@ def delete_message(handle):
         print(e.response['Error']['Message'])
 
 def get_messages():
-    try:
-        response = sqs.receive_message(
-            QueueUrl=url,
-            AttributeNames=['All'],
-            MaxNumberOfMessages=10,
-            MessageAttributeNames=['All']
-        )
-        if "Messages" in response:
-            messages = []
-            for msg in response['Messages']:
-                order = int(msg['MessageAttributes']['order']['StringValue'])
-                word = msg['MessageAttributes']['word']['StringValue']
-                handle = msg['ReceiptHandle']
-                messages.append({"order": order, "word": word, "handle": handle})
-            return messages
-        else:
-            print("No messages in the queue")
-            return []
-    except ClientError as e:
-        print(e.response['Error']['Message'])
+    for r in range(1,11):
+        try:
+            response = sqs.receive_message(
+                QueueUrl=url,
+                AttributeNames=['All'],
+                MaxNumberOfMessages=1,
+                MessageAttributeNames=['All']
+            )
+            print(response)
+            if "Messages" in response:
+                messages = []
+                for msg in response['Messages']:
+                    order = int(msg['MessageAttributes']['order']['StringValue'])
+                    word = msg['MessageAttributes']['word']['StringValue']
+                    handle = msg['ReceiptHandle']
+                    messages.append({"order": order, "word": word, "handle": handle})
+                return messages
+            else:
+                print("No messages in the queue")
+                return []
+        except ClientError as e:
+            print(e.response['Error']['Message'])
 
 def reassemble_phrase(messages):
     messages.sort(key=lambda x: x['order'])
@@ -61,6 +63,7 @@ if __name__ == "__main__":
             file.write(phrase)
             
         for msg in messages:
-            delete_message(msg['handle'])
+            #delete_message(msg['handle'])
+            print("delete")
     else:
         print("No messages to process")
