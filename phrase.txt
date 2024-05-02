@@ -10,3 +10,5 @@ Order: 8, Word: need
 Order: 9, Word: PowerPoint.
 
 # People who know what they're talking about don't need powerpoint.
+
+## I collaborated with Mackenzie Keeley on this project!
